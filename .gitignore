@@ -1,0 +1,26 @@
+# secrets — never commit real credentials
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# local vector store (auto-generated at runtime)
+chroma_db/
+*.sqlite
+*.db
+
+# generated output — excluded since it may contain sensitive business data
+report.html
+
+# macOS
+.DS_Store
+
+# logs
+*.log
+
+# IDE
+.vscode/
+.idea/

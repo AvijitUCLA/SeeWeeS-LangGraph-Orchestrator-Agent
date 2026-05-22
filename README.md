@@ -178,4 +178,4 @@ The `data/` directory contains:
 
 ## License
 
-For academic use — UCLA MSBA Industry Seminar demo project.
+For academic use — UCLA MSBA Industry Seminar Agentic AI Seminar.

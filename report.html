@@ -1,0 +1,203 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatch Operations Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { width: 90%; margin: auto; padding: 20px; }
+        h1, h2, h3 { color: #0056b3; }
+        h1 { border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 20px; }
+        ul { list-style-type: disc; margin-left: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .highlight-row { background-color: #fffacd; } /* Light yellow for worst waypoint */
+        .highlight-score { font-weight: bold; color: #d9534f; } /* Red for max risk score */
+        .info-box { background-color: #e7f3ff; border-left: 6px solid #2196F3; margin-bottom: 15px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dispatch Operations Report</h1>
+
+        <h2>Weather Risk Summary</h2>
+        <div class="info-box">
+            <p><strong>Overall Route Risk Score:</strong> <span class="highlight-score">1</span> (Corridor Max)</p>
+            <p><strong>Worst Waypoint:</strong> W3 (New Haven, CT) due to High Wind Risk.</p>
+        </div>
+
+        <h3>Waypoint-Specific Weather Risks</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Waypoint</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Risk Score (0-3)</th>
+                    <th>Max Precip (mm/day)</th>
+                    <th>Max Wind Gust (km/h)</th>
+                    <th>Min Temp (C)</th>
+                    <th>Risk Flags</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>W1</td>
+                    <td>Newark</td>
+                    <td>NJ</td>
+                    <td>0</td>
+                    <td>0.0</td>
+                    <td>41.0</td>
+                    <td>21.6</td>
+                    <td>No significant risks</td>
+                </tr>
+                <tr>
+                    <td>W2</td>
+                    <td>Bronx</td>
+                    <td>NY</td>
+                    <td>0</td>
+                    <td>0.0</td>
+                    <td>40.7</td>
+                    <td>21.1</td>
+                    <td>No significant risks</td>
+                </tr>
+                <tr class="highlight-row">
+                    <td>W3</td>
+                    <td>New Haven</td>
+                    <td>CT</td>
+                    <td class="highlight-score">1</td>
+                    <td>0.0</td>
+                    <td>46.8</td>
+                    <td>15.6</td>
+                    <td>High Wind Risk</td>
+                </tr>
+                <tr>
+                    <td>W4</td>
+                    <td>Providence</td>
+                    <td>RI</td>
+                    <td class="highlight-score">1</td>
+                    <td>10.1</td>
+                    <td>51.8</td>
+                    <td>17.8</td>
+                    <td>High Wind Risk</td>
+                </tr>
+                <tr>
+                    <td>W5</td>
+                    <td>Boston</td>
+                    <td>MA</td>
+                    <td class="highlight-score">1</td>
+                    <td>0.0</td>
+                    <td>49.7</td>
+                    <td>17.6</td>
+                    <td>High Wind Risk</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Dispatch Plan for next 24 hours</h2>
+        <ul>
+            <li><strong>Summary:</strong> Dispatch operations will proceed with a 10% weather-driven travel time buffer due to high wind risks. 5 items excluded due to missing <code>unique_item_id</code>. 10 standard trucks required.</li>
+        </ul>
+
+        <h3>Detailed Plan</h3>
+        <ul>
+            <li><strong>Data Quality & Shipment Validation:</strong>
+                <ul>
+                    <li><strong>Exclusions:</strong> 5 items (5.75% of records) with missing <code>unique_item_id</code> will be <strong>excluded</strong>.</li>
+                    <li><strong>Valid Shipments:</strong> 82 valid items will proceed.</li>
+                    <li><strong>Anomaly Flagging:</strong> No <code>item_id</code> not in master table, <code>item_name</code> mismatch, or duplicate <code>unique_item_id</code> issues identified for valid items.</li>
+                </ul>
+            </li>
+            <li><strong>Trucking & Capacity Planning:</strong>
+                <ul>
+                    <li><strong>Total Volume:</strong> 82 volume units.</li>
+                    <li><strong>Packing Buffer:</strong> Required volume is 90.2 volume units (82 * 1.10).</li>
+                    <li><strong>Truck Allocation:</strong> 10 trucks required (ceil(90.2 / 10)).</li>
+                </ul>
+            </li>
+            <li><strong>Weather Risk Integration & Travel Buffers:</strong>
+                <ul>
+                    <li><strong>Route Risk Score:</strong> Overall <code>route_risk_score_0_3</code> is <span class="highlight-score">1</span>.</li>
+                    <li><strong>Specific Risks:</strong> Driven by <code>high_wind_risk</code> at W3 (46.8 km/h), W4 (51.8 km/h), and W5 (49.7 km/h).</li>
+                    <li><strong>Applied Buffer:</strong> A <strong>10% travel time buffer</strong> will be applied to all dispatches.</li>
+                </ul>
+            </li>
+            <li><strong>SLA Compliance:</strong>
+                <ul>
+                    <li>Plans designed to meet SLA Tier 1 (6 hours) and Tier 2 (12 hours).</li>
+                    <li>10% travel buffer factored into estimated arrival times to maintain SLA compliance.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>What to Monitor</h2>
+        <h3>Data Monitoring (Next 24 hours)</h3>
+        <ul>
+            <li><strong><code>unique_item_id</code> Completeness:</strong> Monitor for missing values; 5.75% exclusion rate requires attention.</li>
+            <li><strong>Item Master Data Accuracy:</strong> Monitor for <code>item_id</code> not in master table, <code>item_name</code> mismatches, or duplicate <code>unique_item_id</code>.</li>
+            <li><strong>Excluded Rows Logging:</strong> Ensure accurate logging and reporting of excluded rows with reason codes.</li>
+            <li><strong>Volume & Truck Utilization:</strong> Monitor actual vs. planned capacity.</li>
+        </ul>
+        <h3>Weather Monitoring (Next 24-48 hours)</h3>
+        <ul>
+            <li><strong>Route Weather Forecasts:</strong> Continuously monitor updated forecasts for the entire route.</li>
+            <li><strong>Specific Risk Flags:</strong> Pay close attention to changes in <code>high_wind_risk</code>, and potential emergence of <code>heavy_rain_risk</code> or <code>freezing_risk</code>.</li>
+            <li><strong>Route Risk Score:</strong> Monitor for any escalation from the current score of 1.</li>
+        </ul>
+
+        <h2>Contingency Triggers</h2>
+        <ul>
+            <li><strong>Escalation to <code>risk_score 2</code>:</strong>
+                <ul>
+                    <li>Travel buffer automatically increases to <strong>25%</strong>.</li>
+                    <li>Re-evaluation of dispatches for SLA impacts and communication with hospitals.</li>
+                </ul>
+            </li>
+            <li><strong>Escalation to <code>risk_score 3</code>:</strong>
+                <ul>
+                    <li><strong>40% travel buffer</strong> applied.</li>
+                    <li>Immediate escalation protocol: urgent review, alternative routes/modes, direct hospital communication, potential hold on non-critical shipments.</li>
+                </ul>
+            </li>
+            <li><strong>Emergence of New Risk Flags:</strong>
+                <ul>
+                    <li>New <code>heavy_rain_risk</code> (≥ 15.0 mm/day) or <code>freezing_risk</code> (≤ 0.0 °C) will trigger re-assessment and operational adjustments.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>Expected KPI Impacts</h2>
+        <ul>
+            <li><strong>Valid vs excluded shipment counts:</strong>
+                <ul>
+                    <li><strong>Impact:</strong> Increase in "excluded shipment counts" (5 items) and reduction in "valid shipment counts".</li>
+                    <li><strong>Target:</strong> Reduce excluded shipments to 0% by addressing root cause.</li>
+                </ul>
+            </li>
+            <li><strong>SLA risk flags:</strong>
+                <ul>
+                    <li><strong>Impact:</strong> 10% weather buffer increases estimated time-in-transit, potentially pushing shipments closer to SLA limits.</li>
+                    <li><strong>Target:</strong> Maintain SLA compliance despite buffers; monitor closely for violations.</li>
+                </ul>
+            </li>
+            <li><strong>Weather risk summary (per waypoint):</strong>
+                <ul>
+                    <li><strong>Impact:</strong> Actively generated and utilized, providing transparent insights into weather risks.</li>
+                    <li><strong>Target:</strong> Ensure accurate and timely summaries for all planning cycles.</li>
+                </ul>
+            </li>
+            <li><strong>Applied travel buffers:</strong>
+                <ul>
+                    <li><strong>Impact:</strong> 10% buffer applied to all dispatches, impacting estimated arrival times and potentially increasing operational costs.</li>
+                    <li><strong>Target:</strong> Optimize buffer application to mitigate risk without unduly impacting efficiency or SLA.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
+```
